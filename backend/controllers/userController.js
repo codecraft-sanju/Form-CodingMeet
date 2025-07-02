@@ -55,6 +55,7 @@ const sendConfirmationEmail = async (user) => {
       pass: process.env.EMAIL_PASS,
     },
   });
+  //email
 
   await transporter.sendMail({
     from: `"CodingMeet" <${process.env.EMAIL_USER}>`,
