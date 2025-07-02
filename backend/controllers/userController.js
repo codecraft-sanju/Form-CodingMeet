@@ -1,5 +1,5 @@
+const { sendConfirmationEmail } = require('../config/nodemailer');
 const User = require('../models/User');
-const nodemailer = require('nodemailer');
 
 exports.registerUser = async (req, res) => {
   try {
@@ -12,10 +12,12 @@ exports.registerUser = async (req, res) => {
       courses,
       classTime,
       dob,
+      isAdmin,
     } = req.body;
-    const profilePicPath = req.file ? req.file.path : null;
 
-    const user = new User({
+    const profilePicUrl = req.file ? req.file.path : null;
+
+    const newUser = await User.create({
       fullName,
       email,
       mobile,
@@ -24,16 +26,15 @@ exports.registerUser = async (req, res) => {
       classTime,
       dob,
       courses: JSON.parse(courses),
-      profilePicPath,
+      profilePicPath: profilePicUrl,
+      isAdmin,
     });
 
-    await user.save();
-    await sendConfirmationEmail(user);
-
-    res.json({ success: true });
+    await sendConfirmationEmail(newUser);
+    res.status(201).json({ success: true, user: newUser });
   } catch (err) {
     console.error('Register error:', err);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: 'User registration failed.' });
   }
 };
 
@@ -43,43 +44,6 @@ exports.getUsers = async (req, res) => {
     res.json(users);
   } catch (err) {
     console.error('Get users error:', err);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: 'Failed to fetch users.' });
   }
-};
-
-const sendConfirmationEmail = async (user) => {
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
-  //email
-
-  await transporter.sendMail({
-    from: `"CodingMeet" <${process.env.EMAIL_USER}>`,
-    to: user.email,
-    subject: 'Welcome to CodingMeet – You’re officially in!',
-    html: `
-      <div style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px; border-radius: 10px; max-width: 600px; margin: auto;">
-        <h2 style="color: #4f46e5;">Hi ${user.fullName},</h2>
-        <p style="font-size: 16px; color: #333;">Thank you for registering for <strong style="color: #10b981;">CodingMeet</strong> – your gateway to mastering Web Development!</p>
-        
-        <p style="font-size: 15px; color: #333;">We’ve received your registration details, and our team will get in touch soon to help you get started with your first live session.</p>
-
-        <hr style="margin: 20px 0;" />
-
-        <p style="font-size: 14px; color: #555;">
-           Skills Selected: <strong>${user.skillLevel}</strong><br />
-           Courses: <strong>${user.courses.join(', ')}</strong><br />
-           DOB: <strong>${user.dob}</strong>
-        </p>
-
-        <p style="font-size: 15px; color: #333;">Feel free to reply to this email if you have any questions. We're excited to see you grow!</p>
-
-        <p style="margin-top: 30px; font-size: 14px; color: #888;">– The CodingMeet Team </p>
-      </div>
-    `,
-  });
 };

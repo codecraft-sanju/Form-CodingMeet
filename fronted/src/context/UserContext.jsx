@@ -16,7 +16,7 @@ export const UserProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchUsers(); 
+    fetchUsers();
   }, []);
 
   return (
