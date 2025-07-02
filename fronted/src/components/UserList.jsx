@@ -13,7 +13,7 @@ export default function UserList() {
             className="flex items-center bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-xl p-4 sm:p-6 gap-4 sm:gap-6 hover:scale-[1.01] transition-transform"
           >
             <img
-              src={`${import.meta.env.VITE_API_URL}/${user.profilePicPath}`}
+              src={`${import.meta.env.VITE_API_URL}/${user.profilePicPath || "./profile.jpg"}`}
               alt="Profile"
               className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-4 border-purple-400 shadow-md"
             />
