@@ -1,38 +1,55 @@
 import RegistrationForm from './components/RegistrationForm';
 import UserList from './components/UserList';
-import { AuthProvider } from './context/AuthContext';
+import AnimatedCanvas from './components/AnimatedCanvas';
 import { ToastContainer } from 'react-toastify';
+import { motion } from 'framer-motion';
+import { TypeAnimation } from 'react-type-animation';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-
   return (
-    <AuthProvider>
-      <div className="min-h-screen bg-gradient-to-br from-blue-700 via-purple-700 to-pink-600 flex flex-col items-center px-4 py-10 space-y-16 text-white">
-        {/* Hero Heading */}
-        <header className="text-center max-w-4xl space-y-4">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight drop-shadow-lg">
-            <span className="block text-yellow-300">Join CodingMeet</span>
-            <span className="block text-white">Learn Web Development</span>
-            <span className="block text-green-300">Absolutely Free </span>
-          </h1>
-          <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto">
-            Build real-world skills in HTML, CSS, JavaScript, and React. Perfect for beginners — 100% free courses, projects & community support.
-          </p>
-        </header>
+    <div className="relative min-h-screen flex flex-col items-center px-4 py-10 space-y-16 text-white overflow-hidden">
+      <AnimatedCanvas />
 
-        
-        <div className="w-full max-w-4xl">
-          <RegistrationForm />
-        </div>
+      <motion.header
+        className="text-center max-w-4xl space-y-4 z-10"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+      >
+        <TypeAnimation
+          sequence={[
+            'Join CodingMeet',
+            1500,
+            'Learn Web Development',
+            1500,
+            'Absolutely Free',
+            1500,
+          ]}
+          wrapper="h1"
+          speed={50}
+          className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight drop-shadow-lg text-yellow-300"
+          repeat={Infinity}
+        />
 
-    
-        <UserList />
+        <motion.p
+          className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2.5, duration: 0.8 }}
+        >
+          Build real-world skills in HTML, CSS, JavaScript, and React. Perfect for beginners — 100% free courses, projects & community support.
+        </motion.p>
+      </motion.header>
 
-    
-        <ToastContainer position="top-right" autoClose={3000} hideProgressBar closeOnClick pauseOnHover />
+      <div className="w-full max-w-4xl z-10">
+        <RegistrationForm />
       </div>
-    </AuthProvider>
+
+      <UserList />
+
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar closeOnClick pauseOnHover />
+    </div>
   );
 }
 
