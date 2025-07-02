@@ -23,6 +23,7 @@ export default function RegistrationForm() {
     dob: "",
   });
 
+  const [isLoading, setIsLoading] = useState(false);
   const { fetchUsers } = useUserContext();
 
   const handleChange = (e) => {
@@ -43,6 +44,8 @@ export default function RegistrationForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+
     const data = new FormData();
     Object.entries(formData).forEach(([key, val]) => {
       if (key === "courses") data.append(key, JSON.stringify(val));
@@ -66,13 +69,34 @@ export default function RegistrationForm() {
     } catch (err) {
       console.error("Error submitting form:", err.response?.data || err.message);
       toast.error("Error submitting form");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const inputClass =
     "peer w-full bg-white/10 text-white border border-white/30 rounded-xl px-4 pt-6 pb-2 focus:outline-none focus:ring-2 focus:ring-indigo-400 pl-10 placeholder-transparent";
 
-  return (
+  const Loader = () => (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="w-full flex flex-col items-center justify-center py-20"
+    >
+      <motion.div
+        className="w-16 h-16 border-4 border-white border-t-indigo-500 rounded-full animate-spin"
+        animate={{ rotate: 360 }}
+        transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+      />
+      <p className="mt-4 text-white text-lg font-semibold animate-pulse">
+        Submitting your registration...
+      </p>
+    </motion.div>
+  );
+
+  return isLoading ? (
+    <Loader />
+  ) : (
     <motion.form
       onSubmit={handleSubmit}
       className="w-full bg-white/5 backdrop-blur-md border border-white/20 shadow-2xl p-6 sm:p-8 rounded-2xl grid grid-cols-1 md:grid-cols-2 gap-6"
@@ -124,19 +148,21 @@ export default function RegistrationForm() {
       <div className="col-span-1 md:col-span-2">
         <label className="block mb-1 text-sm text-white font-medium">Select Courses</label>
         <div className="flex flex-wrap gap-4">
-          {["HTML", "CSS", "JS", "React", "MERN Stack", "Full Stack Development"].map((course) => (
-            <label key={course} className="inline-flex items-center gap-2 text-sm text-white/80">
-              <input
-                type="checkbox"
-                name="courses"
-                value={course}
-                onChange={handleChange}
-                checked={formData.courses.includes(course)}
-                className="accent-purple-400"
-              />
-              {course}
-            </label>
-          ))}
+          {["HTML", "CSS", "JS", "React", "MERN Stack", "Full Stack Development"].map(
+            (course) => (
+              <label key={course} className="inline-flex items-center gap-2 text-sm text-white/80">
+                <input
+                  type="checkbox"
+                  name="courses"
+                  value={course}
+                  onChange={handleChange}
+                  checked={formData.courses.includes(course)}
+                  className="accent-purple-400"
+                />
+                {course}
+              </label>
+            )
+          )}
         </div>
       </div>
 
@@ -165,6 +191,7 @@ export default function RegistrationForm() {
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.95 }}
         type="submit"
+        disabled={isLoading}
         className="col-span-1 md:col-span-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition-all w-full"
       >
         Register

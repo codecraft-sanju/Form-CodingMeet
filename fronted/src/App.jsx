@@ -1,5 +1,5 @@
 import RegistrationForm from './components/RegistrationForm';
-import UserList from './components/UserList';
+// import UserList from './components/UserList';
 import AnimatedCanvas from './components/AnimatedCanvas';
 import { ToastContainer } from 'react-toastify';
 import { motion } from 'framer-motion';
@@ -46,7 +46,7 @@ function App() {
         <RegistrationForm />
       </div>
 
-      <UserList />
+      {/* <UserList /> */}
 
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar closeOnClick pauseOnHover />
     </div>
