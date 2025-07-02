@@ -1,7 +1,6 @@
 const User = require('../models/User');
 const nodemailer = require('nodemailer');
 
-
 const sendConfirmationEmail = async (user) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -32,7 +31,6 @@ const sendConfirmationEmail = async (user) => {
   await transporter.sendMail(mailOptions);
 };
 
-
 exports.registerUser = async (req, res) => {
   try {
     const {
@@ -58,7 +56,7 @@ exports.registerUser = async (req, res) => {
     });
 
     await user.save();
-    await sendConfirmationEmail(user); 
+    await sendConfirmationEmail(user);
 
     res.json({ success: true });
   } catch (err) {
@@ -66,7 +64,6 @@ exports.registerUser = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
 
 exports.getUsers = async (req, res) => {
   try {
@@ -78,7 +75,6 @@ exports.getUsers = async (req, res) => {
   }
 };
 
-
 exports.makeAdmin = async (req, res) => {
   const { email } = req.body;
   try {
@@ -87,6 +83,21 @@ exports.makeAdmin = async (req, res) => {
     else res.status(404).json({ error: 'User not found' });
   } catch (err) {
     console.error('Error in makeAdmin:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.auth = async (req, res, next) => {
+  const userId = req.query.id;
+  if (!userId) return res.status(401).json({ message: 'User id is required' });
+  try {
+    const user = await User.findById(userId);
+    if (!user.isAdmin || !user) {
+      return res.status(403).json({ message: 'only admin access' });
+    }
+    next();
+  } catch (err) {
+    console.error('Error in auth:', err.message);
     res.status(500).json({ error: err.message });
   }
 };

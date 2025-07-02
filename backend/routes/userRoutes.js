@@ -6,6 +6,7 @@ const {
   registerUser,
   getUsers,
   makeAdmin,
+  auth,
 } = require('../controllers/userController');
 
 const storage = multer.diskStorage({
@@ -15,7 +16,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.post('/register', upload.single('profilePic'), registerUser);
-router.get('/users', getUsers);
+router.get('/users',auth, getUsers);
 router.post('/make-admin', makeAdmin);
 
 module.exports = router;

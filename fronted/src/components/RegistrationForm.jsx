@@ -167,7 +167,7 @@ export default function RegistrationForm() {
         disabled={loading}
         className="col-span-1 md:col-span-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition-all w-full"
       >
-        {loading ? "Processing...." : "Register"}
+        {loading ? "sending......." : "Register"}
       </motion.button>
     </motion.form>
   );

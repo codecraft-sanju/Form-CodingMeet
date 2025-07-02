@@ -3,26 +3,20 @@ import axios from "axios";
 
 export default function UserList() {
   const [users, setUsers] = useState([]);
-  const adminEmail = localStorage.getItem("email")
-  // console.log(adminEmail === "sanjaychoudhury693@gmail.com")
-
-
-
-
+  
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_API_URL}/api/users`)
+      .get(`${import.meta.env.VITE_API_URL}/api/users?id=6864ffcebcd1c8c504b36b95`)
       .then((res) => setUsers(res.data))
       .catch((err) => console.error("Axios error:", err));
   }, []);
-
   return (
     <div className="w-full max-w-6xl space-y-6">
       <h2 className="text-3xl font-bold text-white text-center">Registered Users</h2>
       <div className="space-y-4">
         {users.map((user) => (
           <div
-            key={adminEmail === "sanjaychoudhury693@gmail.com" && user._id}
+            key={user._id}
             className="flex items-center bg-white/30 backdrop-blur-xl border border-white/20 rounded-2xl shadow-lg p-4 sm:p-6 gap-4 sm:gap-6 hover:scale-[1.01] transition-all"
           >
             <img

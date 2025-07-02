@@ -5,12 +5,11 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-  localStorage.setItem("email", "sanjaychoudhury693@gmail.com")
+
   return (
     <AuthProvider>
       <div className="min-h-screen bg-gradient-to-br from-blue-700 via-purple-700 to-pink-600 flex flex-col items-center px-4 py-10 space-y-16 text-white">
-        
-        
+        {/* Hero Heading */}
         <header className="text-center max-w-4xl space-y-4">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight drop-shadow-lg">
             <span className="block text-yellow-300">Join CodingMeet</span>
