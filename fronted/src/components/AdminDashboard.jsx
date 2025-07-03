@@ -18,14 +18,15 @@ export default function AdminDashboard() {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white p-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white p-4 sm:p-6">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6 text-center text-indigo-400">
-          Admin Dashboard – All Registered Users
+        <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-indigo-400">
+          Admin Dashboard
         </h1>
 
-        <div className="overflow-x-auto shadow rounded-lg">
-          <table className="w-full border-collapse bg-white/10 backdrop-blur-md rounded-lg overflow-hidden text-sm md:text-base">
+        {/* Table view for larger screens */}
+        <div className="w-full overflow-x-auto hidden sm:block rounded-lg shadow">
+          <table className="min-w-[700px] w-full border-collapse bg-white/10 backdrop-blur-md rounded-lg text-sm sm:text-base">
             <thead className="bg-indigo-600 text-white">
               <tr>
                 <th className="p-3 text-left">#</th>
@@ -46,28 +47,54 @@ export default function AdminDashboard() {
                     <img
                       src={user.profilePicPath}
                       alt="Profile"
-                      className="w-10 h-10 rounded-full border"
+                      className="w-10 h-10 rounded-full border object-cover"
                     />
                   </td>
-                  <td className="p-3">{user.fullName}</td>
-                  <td className="p-3">{user.email}</td>
-                  <td className="p-3">{user.mobile}</td>
-                  <td className="p-3">{user.skillLevel}</td>
-                  <td className="p-3">{user.courses.join(", ")}</td>
-                  <td className="p-3">{user.dob}</td>
+                  <td className="p-3 break-words">{user.fullName}</td>
+                  <td className="p-3 break-words">{user.email}</td>
+                  <td className="p-3 break-words">{user.mobile}</td>
+                  <td className="p-3 break-words">{user.skillLevel}</td>
+                  <td className="p-3 break-words">{user.courses.join(", ")}</td>
+                  <td className="p-3 break-words">{user.dob}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
 
+        {/* Card view for mobile */}
+        <div className="space-y-4 sm:hidden">
+          {currentUsers.map((user, i) => (
+            <div
+              key={user._id}
+              className="bg-white/10 backdrop-blur-md p-4 rounded-lg shadow text-sm"
+            >
+              <div className="flex items-center gap-4 mb-2">
+                <img
+                  src={user.profilePicPath}
+                  alt="Profile"
+                  className="w-12 h-12 rounded-full border object-cover"
+                />
+                <div>
+                  <p className="font-bold">{user.fullName}</p>
+                  <p className="text-gray-300 text-xs">{user.email}</p>
+                </div>
+              </div>
+              <p><span className="font-semibold">Mobile:</span> {user.mobile}</p>
+              <p><span className="font-semibold">Skill:</span> {user.skillLevel}</p>
+              <p><span className="font-semibold">Courses:</span> {user.courses.join(", ")}</p>
+              <p><span className="font-semibold">DOB:</span> {user.dob}</p>
+            </div>
+          ))}
+        </div>
+
         {/* Pagination Controls */}
-        <div className="flex justify-center mt-6 gap-2">
+        <div className="flex flex-wrap justify-center mt-6 gap-2">
           {Array.from({ length: totalPages }, (_, i) => (
             <button
               key={i}
               onClick={() => paginate(i + 1)}
-              className={`px-4 py-2 rounded-lg ${
+              className={`px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base rounded-lg ${
                 currentPage === i + 1
                   ? "bg-indigo-600 text-white"
                   : "bg-white/10 text-white hover:bg-indigo-400"
