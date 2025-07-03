@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useUserContext } from "../context/UserContext";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function AdminDashboard() {
   const { users, fetchUsers } = useUserContext();
@@ -9,6 +11,19 @@ export default function AdminDashboard() {
   useEffect(() => {
     fetchUsers();
   }, []);
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this user?")) return;
+
+    try {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/users/${id}`);
+      toast.success("User deleted successfully!");
+      fetchUsers();
+    } catch (err) {
+      console.error("Delete error:", err);
+      toast.error("Failed to delete user.");
+    }
+  };
 
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
@@ -24,7 +39,7 @@ export default function AdminDashboard() {
           Admin Dashboard
         </h1>
 
-        {/* Table view for larger screens */}
+        {/* Table View for Desktop */}
         <div className="w-full overflow-x-auto hidden sm:block rounded-lg shadow">
           <table className="min-w-[700px] w-full border-collapse bg-white/10 backdrop-blur-md rounded-lg text-sm sm:text-base">
             <thead className="bg-indigo-600 text-white">
@@ -37,6 +52,7 @@ export default function AdminDashboard() {
                 <th className="p-3 text-left">Skill</th>
                 <th className="p-3 text-left">Courses</th>
                 <th className="p-3 text-left">DOB</th>
+                <th className="p-3 text-left">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -56,13 +72,21 @@ export default function AdminDashboard() {
                   <td className="p-3 break-words">{user.skillLevel}</td>
                   <td className="p-3 break-words">{user.courses.join(", ")}</td>
                   <td className="p-3 break-words">{user.dob}</td>
+                  <td className="p-3">
+                    <button
+                      onClick={() => handleDelete(user._id)}
+                      className="text-red-500 hover:text-red-700 font-semibold text-xs sm:text-sm"
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
 
-        {/* Card view for mobile */}
+        {/* Card View for Mobile */}
         <div className="space-y-4 sm:hidden">
           {currentUsers.map((user, i) => (
             <div
@@ -84,6 +108,12 @@ export default function AdminDashboard() {
               <p><span className="font-semibold">Skill:</span> {user.skillLevel}</p>
               <p><span className="font-semibold">Courses:</span> {user.courses.join(", ")}</p>
               <p><span className="font-semibold">DOB:</span> {user.dob}</p>
+              <button
+                onClick={() => handleDelete(user._id)}
+                className="mt-3 text-red-400 hover:text-red-600 text-sm font-medium"
+              >
+                Delete User
+              </button>
             </div>
           ))}
         </div>

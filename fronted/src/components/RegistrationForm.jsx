@@ -182,6 +182,8 @@ export default function RegistrationForm() {
                   checked={formData.skillLevel === level}
                   onChange={handleChange}
                   className="accent-indigo-400"
+              
+
                 />
                 {level}
               </label>
@@ -200,6 +202,8 @@ export default function RegistrationForm() {
                     name="courses"
                     value={course}
                     onChange={handleChange}
+              
+
                     checked={formData.courses.includes(course)}
                     className="accent-purple-400"
                   />
@@ -219,7 +223,9 @@ export default function RegistrationForm() {
             name="profilePic"
             type="file"
             accept="image/*"
-            onChange={handleChange}
+              onChange={handleChange}
+              required
+              
             className="w-full border border-white/30 rounded-xl px-4 py-2 bg-white/10 text-white file:text-white"
           />
           {formData.profilePic && (
