@@ -109,23 +109,19 @@ export default function RegistrationForm() {
     <Loader />
   ) : (
     <>
-      {/* Total Registered Users */}
+     
+
+      {/* Registered Count */}
       <motion.div
-        initial={{ opacity: 0, y: -20 }}
+        initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        transition={{ delay: 0.5, duration: 0.6 }}
         className="w-full text-center mb-8"
       >
-        <div className="inline-block bg-gradient-to-r from-indigo-700 to-purple-600 px-8 py-5 rounded-2xl shadow-xl">
-          <p className="text-white text-lg sm:text-xl font-semibold">
-            🚀 Already{" "}
-            <CountUp
-              end={users.length}
-              duration={2}
-              separator=","
-              className="text-yellow-300 text-3xl font-extrabold"
-            />
-            {" "}learners have registered for <span className="text-pink-300 font-bold">CodingMeet</span>!
+        <div className="inline-block bg-white/10 backdrop-blur-md px-8 py-5 rounded-2xl shadow-xl border border-purple-400/40 hover:shadow-purple-500/50 transition-all">
+          <p className="text-white text-lg sm:text-xl font-medium">
+            <CountUp end={users.length} duration={2} separator="," className="text-yellow-400 text-3xl font-extrabold" /> learners
+            already joined <span className="text-pink-400 font-semibold">CodingMeet</span>!
           </p>
         </div>
       </motion.div>
@@ -133,7 +129,7 @@ export default function RegistrationForm() {
       {/* Registration Form */}
       <motion.form
         onSubmit={handleSubmit}
-        className="w-full bg-white/5 backdrop-blur-md border border-white/20 shadow-2xl p-6 sm:p-8 rounded-2xl grid grid-cols-1 md:grid-cols-2 gap-6"
+        className="w-full bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl p-6 sm:p-8 rounded-3xl grid grid-cols-1 md:grid-cols-2 gap-6"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
       >
