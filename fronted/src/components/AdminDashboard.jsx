@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { useUserContext } from "../context/UserContext";
 import axios from "axios";
 import { toast } from "react-toastify";
+import InviteModal from "./InviteModal";
 
 export default function AdminDashboard() {
   const { users, fetchUsers } = useUserContext();
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [loadingUserId, setLoadingUserId] = useState(null);
   const usersPerPage = 5;
 
   useEffect(() => {
@@ -14,6 +17,7 @@ export default function AdminDashboard() {
 
   const handleDelete = async (userId, name) => {
     if (!window.confirm(`Are you sure you want to delete ${name}?`)) return;
+    setLoadingUserId(userId);
     try {
       await axios.delete(`${import.meta.env.VITE_API_URL}/api/users/${userId}`);
       toast.success("User deleted successfully.");
@@ -21,7 +25,13 @@ export default function AdminDashboard() {
     } catch (err) {
       console.error("Delete error:", err);
       toast.error("Failed to delete user.");
+    } finally {
+      setLoadingUserId(null);
     }
+  };
+
+  const handleInviteClick = (user) => {
+    setSelectedUser(user);
   };
 
   const indexOfLastUser = currentPage * usersPerPage;
@@ -38,7 +48,7 @@ export default function AdminDashboard() {
           Admin Dashboard
         </h1>
 
-        {/* Table View for Desktop */}
+        {/* Table View */}
         <div className="w-full overflow-x-auto hidden sm:block rounded-lg shadow">
           <table className="min-w-[900px] w-full border-collapse bg-white/10 backdrop-blur-md rounded-lg text-sm sm:text-base">
             <thead className="bg-indigo-600 text-white">
@@ -66,19 +76,34 @@ export default function AdminDashboard() {
                       className="w-10 h-10 rounded-full border object-cover"
                     />
                   </td>
-                  <td className="p-3 break-words">{user.fullName}</td>
-                  <td className="p-3 break-words">{user.email}</td>
-                  <td className="p-3 break-words">{user.mobile}</td>
-                  <td className="p-3 break-words">{user.skillLevel}</td>
-                  <td className="p-3 break-words">{user.learningPath || "—"}</td>
-                  <td className="p-3 break-words">{user.courses?.join(", ") || "—"}</td>
-                  <td className="p-3 break-words">{user.dob}</td>
-                  <td className="p-3">
+                  <td className="p-3">{user.fullName}</td>
+                  <td className="p-3">{user.email}</td>
+                  <td className="p-3">{user.mobile}</td>
+                  <td className="p-3">{user.skillLevel}</td>
+                  <td className="p-3">{user.learningPath || "—"}</td>
+                  <td className="p-3">{user.courses?.join(", ") || "—"}</td>
+                  <td className="p-3">{user.dob}</td>
+                  <td className="p-3 flex flex-col gap-2">
                     <button
                       onClick={() => handleDelete(user._id, user.fullName)}
-                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs"
+                      className={`${
+                        loadingUserId === user._id
+                          ? "bg-gray-500 cursor-not-allowed"
+                          : "bg-red-500 hover:bg-red-600"
+                      } text-white px-3 py-1 rounded text-xs flex items-center justify-center gap-1`}
+                      disabled={loadingUserId === user._id}
                     >
-                      Delete
+                      {loadingUserId === user._id ? (
+                        <span className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>
+                      ) : (
+                        "Delete"
+                      )}
+                    </button>
+                    <button
+                      onClick={() => handleInviteClick(user)}
+                      className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs"
+                    >
+                      Invite
                     </button>
                   </td>
                 </tr>
@@ -87,7 +112,7 @@ export default function AdminDashboard() {
           </table>
         </div>
 
-        {/* Card View for Mobile */}
+        {/* Mobile View */}
         <div className="space-y-4 sm:hidden">
           {currentUsers.map((user) => (
             <div
@@ -110,17 +135,34 @@ export default function AdminDashboard() {
               <p><span className="font-semibold">Learning:</span> {user.learningPath || "—"}</p>
               <p><span className="font-semibold">Courses:</span> {user.courses?.join(", ") || "—"}</p>
               <p><span className="font-semibold">DOB:</span> {user.dob}</p>
-              <button
-                onClick={() => handleDelete(user._id, user.fullName)}
-                className="mt-3 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs"
-              >
-                Delete
-              </button>
+              <div className="flex gap-2 mt-3">
+                <button
+                  onClick={() => handleDelete(user._id, user.fullName)}
+                  className={`${
+                    loadingUserId === user._id
+                      ? "bg-gray-500 cursor-not-allowed"
+                      : "bg-red-500 hover:bg-red-600"
+                  } text-white px-3 py-1 rounded text-xs flex items-center justify-center gap-1`}
+                  disabled={loadingUserId === user._id}
+                >
+                  {loadingUserId === user._id ? (
+                    <span className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>
+                  ) : (
+                    "Delete"
+                  )}
+                </button>
+                <button
+                  onClick={() => handleInviteClick(user)}
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs"
+                >
+                  Invite
+                </button>
+              </div>
             </div>
           ))}
         </div>
 
-        {/* Pagination Controls */}
+        {/* Pagination */}
         <div className="flex flex-wrap justify-center mt-6 gap-2">
           {Array.from({ length: totalPages }, (_, i) => (
             <button
@@ -137,6 +179,11 @@ export default function AdminDashboard() {
           ))}
         </div>
       </div>
+
+      {/* Invite Modal */}
+      {selectedUser && (
+        <InviteModal user={selectedUser} onClose={() => setSelectedUser(null)} />
+      )}
     </div>
   );
 }

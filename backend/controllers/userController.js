@@ -1,4 +1,7 @@
-const { sendConfirmationEmail } = require('../config/nodemailer');
+const {
+  sendConfirmationEmail,
+  sendPersonalEmail,
+} = require('../config/nodemailer');
 const User = require('../models/User');
 const mongoose = require('mongoose');
 
@@ -52,7 +55,6 @@ exports.getUsers = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log('Received delete request for ID:', id);
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res
@@ -72,5 +74,24 @@ exports.deleteUser = async (req, res) => {
   } catch (err) {
     console.error('Delete user error:', err);
     res.status(500).json({ success: false, error: 'Failed to delete user.' });
+  }
+};
+
+
+exports.sendInvite = async (req, res) => {
+  const { to, name, meetLink, date, time } = req.body;
+
+  if (!to || !name || !meetLink || !date || !time) {
+    return res
+      .status(400)
+      .json({ success: false, message: 'Missing required fields' });
+  }
+
+  try {
+    await sendPersonalEmail({ to, name, meetLink, date, time });
+    res.json({ success: true, message: 'Invite sent successfully' });
+  } catch (err) {
+    console.error('Error sending invite:', err);
+    res.status(500).json({ success: false, message: 'Failed to send invite' });
   }
 };

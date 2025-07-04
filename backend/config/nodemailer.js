@@ -41,4 +41,41 @@ const sendConfirmationEmail = async (user) => {
   }
 };
 
-module.exports = { sendConfirmationEmail };
+const sendPersonalEmail = async ({ to, name, meetLink, date, time }) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    await transporter.sendMail({
+      from: `"CodingMeet Team" <${process.env.EMAIL_USER}>`,
+      to,
+      subject: 'Your 1st CodingMeet Session – Join Us Live!',
+      html: `
+        <div style="font-family: Arial, sans-serif; background: #f3f4f6; padding: 20px; border-radius: 10px;">
+          <h2 style="color: #4f46e5;">Hi ${name},</h2>
+          <p style="font-size: 16px;">You're invited to your very first live session of <strong style="color:#10b981">CodingMeet</strong>!</p>
+          
+          <p><strong>Date:</strong> ${date}</p>
+          <p><strong>Time:</strong> ${time}</p>
+          <p><strong>Google Meet:</strong> <a href="${meetLink}" style="color: #2563eb;">Join Meeting</a></p>
+
+          <p style="margin-top: 20px;">Make sure you're ready with a notebook, pen, and your questions!</p>
+
+          <p style="margin-top: 30px; font-size: 14px; color: #888;">– The CodingMeet Team</p>
+        </div>
+      `,
+    });
+  } catch (error) {
+    console.error('Personal email send error:', error);
+  }
+};
+
+module.exports = { sendConfirmationEmail, sendPersonalEmail };
+
+
+
