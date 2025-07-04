@@ -52,16 +52,18 @@ export default function InviteModal({ user, onClose }) {
           className="w-full mb-4 px-4 py-2 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <option value="">Select Time</option>
-          {Array.from({ length: 12 }, (_, h) => h + 1).map((hour) =>
-            ["AM", "PM"].map((period) => {
-              const hh = hour.toString().padStart(2, "0");
-              const formattedTime = `${hh}:00 ${period}`;
-              return (
-                <option key={formattedTime} value={formattedTime}>
-                  {formattedTime}
-                </option>
-              );
-            })
+          {Array.from({ length: 12 }, (_, h) => h + 1).flatMap((hour) =>
+            ["00", "15", "30", "45"].flatMap((min) =>
+              ["AM", "PM"].map((period) => {
+                const hh = hour.toString().padStart(2, "0");
+                const formattedTime = `${hh}:${min} ${period}`;
+                return (
+                  <option key={formattedTime} value={formattedTime}>
+                    {formattedTime}
+                  </option>
+                );
+              })
+            )
           )}
         </select>
 
