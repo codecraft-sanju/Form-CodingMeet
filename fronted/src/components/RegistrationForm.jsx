@@ -250,14 +250,13 @@ export default function RegistrationForm() {
             name="profilePic"
             type="file"
             accept="image/*"
-<<<<<<< HEAD
-              onChange={handleChange}
+
+      
               required
               
-=======
+
             onChange={handleChange}
-            required
->>>>>>> 45c6a4c (intruction add)
+      
             className="w-full border border-white/30 rounded-xl px-4 py-2 bg-white/10 text-white file:text-white"
           />
           {formData.profilePic && (
