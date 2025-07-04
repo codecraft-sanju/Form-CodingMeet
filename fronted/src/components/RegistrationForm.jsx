@@ -11,13 +11,15 @@ import {
   FaImage,
 } from "react-icons/fa";
 import { useUserContext } from "../context/UserContext";
+import { FiChevronDown } from "react-icons/fi";
+import InstructionsModal from "./InstructionsModal";
 
 export default function RegistrationForm() {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     mobile: "",
-    ageClass: "",
+    learningPath: "",
     skillLevel: "Beginner",
     courses: [],
     profilePic: null,
@@ -25,6 +27,7 @@ export default function RegistrationForm() {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [showInstructions, setShowInstructions] = useState(false);
   const { users, fetchUsers } = useUserContext();
 
   useEffect(() => {
@@ -71,7 +74,7 @@ export default function RegistrationForm() {
         fullName: "",
         email: "",
         mobile: "",
-        ageClass: "",
+        learningPath: "",
         skillLevel: "Beginner",
         courses: [],
         profilePic: null,
@@ -109,9 +112,6 @@ export default function RegistrationForm() {
     <Loader />
   ) : (
     <>
-     
-
-      {/* Registered Count */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -120,13 +120,32 @@ export default function RegistrationForm() {
       >
         <div className="inline-block bg-white/10 backdrop-blur-md px-8 py-5 rounded-2xl shadow-xl border border-purple-400/40 hover:shadow-purple-500/50 transition-all">
           <p className="text-white text-lg sm:text-xl font-medium">
-            <CountUp end={users.length} duration={2} separator="," className="text-yellow-400 text-3xl font-extrabold" /> learners
-            already joined <span className="text-pink-400 font-semibold">CodingMeet</span>!
+            <CountUp
+              end={users.length}
+              duration={2}
+              separator=","
+              className="text-yellow-400 text-3xl font-extrabold"
+            />{" "}
+            learners already joined{" "}
+            <span className="text-pink-400 font-semibold">CodingMeet</span>!
           </p>
         </div>
-      </motion.div>
+        </motion.div>
+         {/* View Instructions Button */}
+      <div className="text-center mt-6">
+        <button
+          onClick={() => setShowInstructions(true)}
+          className="bg-gradient-to-r mb-3 from-indigo-600 to-purple-600 text-white font-semibold py-2 px-6 rounded-xl shadow-lg hover:from-purple-700 hover:to-indigo-700 transition"
+        >
+          View Class Instructions
+        </button>
+      </div>
 
-      {/* Registration Form */}
+      {/* Instruction Modal */}
+      {showInstructions && (
+        <InstructionsModal onClose={() => setShowInstructions(false)} />
+      )}
+
       <motion.form
         onSubmit={handleSubmit}
         className="w-full bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl p-6 sm:p-8 rounded-3xl grid grid-cols-1 md:grid-cols-2 gap-6"
@@ -156,18 +175,26 @@ export default function RegistrationForm() {
         ))}
 
         <div className="relative w-full">
-          <input
-            name="ageClass"
-            type="text"
-            value={formData.ageClass}
+          <select
+            name="learningPath"
+            value={formData.learningPath}
             onChange={handleChange}
             required
-            placeholder=" "
-            className={inputClass}
-          />
+            className="peer w-full appearance-none bg-white/10 text-white border border-white/30 rounded-xl px-4 pt-6 pb-2 pr-10 focus:outline-none focus:ring-2 focus:ring-indigo-400 placeholder-transparent"
+          >
+            <option value="" disabled hidden>
+              Select Learning Path
+            </option>
+            {["Web Development", "Machine Learning", "Data Analysis", "Cybersecurity", "UI/UX Design"].map((opt) => (
+              <option key={opt} className="text-black" value={opt}>{opt}</option>
+            ))}
+          </select>
           <label className="absolute left-4 top-2 text-sm text-white font-medium peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-white/80 peer-focus:top-2 peer-focus:text-sm peer-focus:text-indigo-300">
-            Age/Class
+            What do you want to learn?
           </label>
+          <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-white/80 text-lg">
+            <FiChevronDown />
+          </div>
         </div>
 
         <div className="w-full">
@@ -223,9 +250,14 @@ export default function RegistrationForm() {
             name="profilePic"
             type="file"
             accept="image/*"
+<<<<<<< HEAD
               onChange={handleChange}
               required
               
+=======
+            onChange={handleChange}
+            required
+>>>>>>> 45c6a4c (intruction add)
             className="w-full border border-white/30 rounded-xl px-4 py-2 bg-white/10 text-white file:text-white"
           />
           {formData.profilePic && (
@@ -247,6 +279,7 @@ export default function RegistrationForm() {
           Register
         </motion.button>
       </motion.form>
+
     </>
   );
 }

@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 import "react-toastify/dist/ReactToastify.css";
 
+
 function App() {
   return (
     <Router>
@@ -38,16 +39,10 @@ function App() {
                     className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight drop-shadow-lg text-yellow-300"
                     repeat={Infinity}
                   />
-                  <motion.p
-                    className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 2.5, duration: 0.8 }}
-                  >
+                  <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto">
                     Build real-world skills in HTML, CSS, JavaScript, and React.
-                    Perfect for beginners — 100% free courses, projects &
-                    community support.
-                  </motion.p>
+                    Perfect for beginners — 100% free courses, projects & community support.
+                  </p>
                 </motion.header>
                 <div className="w-full max-w-4xl z-10">
                   <RegistrationForm />

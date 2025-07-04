@@ -12,12 +12,20 @@ export default function AdminDashboard() {
     fetchUsers();
   }, []);
 
+<<<<<<< HEAD
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
 
     try {
       await axios.delete(`${import.meta.env.VITE_API_URL}/api/users/${id}`);
       toast.success("User deleted successfully!");
+=======
+  const handleDelete = async (userId, name) => {
+    if (!window.confirm(`Are you sure you want to delete ${name}?`)) return;
+    try {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/users/${userId}`);
+      toast.success("User deleted successfully.");
+>>>>>>> 45c6a4c (intruction add)
       fetchUsers();
     } catch (err) {
       console.error("Delete error:", err);
@@ -41,7 +49,7 @@ export default function AdminDashboard() {
 
         {/* Table View for Desktop */}
         <div className="w-full overflow-x-auto hidden sm:block rounded-lg shadow">
-          <table className="min-w-[700px] w-full border-collapse bg-white/10 backdrop-blur-md rounded-lg text-sm sm:text-base">
+          <table className="min-w-[900px] w-full border-collapse bg-white/10 backdrop-blur-md rounded-lg text-sm sm:text-base">
             <thead className="bg-indigo-600 text-white">
               <tr>
                 <th className="p-3 text-left">#</th>
@@ -50,9 +58,14 @@ export default function AdminDashboard() {
                 <th className="p-3 text-left">Email</th>
                 <th className="p-3 text-left">Mobile</th>
                 <th className="p-3 text-left">Skill</th>
+                <th className="p-3 text-left">Learning</th>
                 <th className="p-3 text-left">Courses</th>
                 <th className="p-3 text-left">DOB</th>
+<<<<<<< HEAD
                 <th className="p-3 text-left">Action</th>
+=======
+                <th className="p-3 text-left">Actions</th>
+>>>>>>> 45c6a4c (intruction add)
               </tr>
             </thead>
             <tbody>
@@ -70,12 +83,18 @@ export default function AdminDashboard() {
                   <td className="p-3 break-words">{user.email}</td>
                   <td className="p-3 break-words">{user.mobile}</td>
                   <td className="p-3 break-words">{user.skillLevel}</td>
-                  <td className="p-3 break-words">{user.courses.join(", ")}</td>
+                  <td className="p-3 break-words">{user.learningPath || "—"}</td>
+                  <td className="p-3 break-words">{user.courses?.join(", ") || "—"}</td>
                   <td className="p-3 break-words">{user.dob}</td>
                   <td className="p-3">
                     <button
+<<<<<<< HEAD
                       onClick={() => handleDelete(user._id)}
                       className="text-red-500 hover:text-red-700 font-semibold text-xs sm:text-sm"
+=======
+                      onClick={() => handleDelete(user._id, user.fullName)}
+                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs"
+>>>>>>> 45c6a4c (intruction add)
                     >
                       Delete
                     </button>
@@ -106,13 +125,21 @@ export default function AdminDashboard() {
               </div>
               <p><span className="font-semibold">Mobile:</span> {user.mobile}</p>
               <p><span className="font-semibold">Skill:</span> {user.skillLevel}</p>
-              <p><span className="font-semibold">Courses:</span> {user.courses.join(", ")}</p>
+              <p><span className="font-semibold">Learning:</span> {user.learningPath || "—"}</p>
+              <p><span className="font-semibold">Courses:</span> {user.courses?.join(", ") || "—"}</p>
               <p><span className="font-semibold">DOB:</span> {user.dob}</p>
               <button
+<<<<<<< HEAD
                 onClick={() => handleDelete(user._id)}
                 className="mt-3 text-red-400 hover:text-red-600 text-sm font-medium"
               >
                 Delete User
+=======
+                onClick={() => handleDelete(user._id, user.fullName)}
+                className="mt-3 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs"
+              >
+                Delete
+>>>>>>> 45c6a4c (intruction add)
               </button>
             </div>
           ))}

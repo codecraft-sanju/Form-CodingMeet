@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
   email: { type: String, required: true },
   mobile: String,
-  ageClass: String,
+  learningPath: String,
   skillLevel: String,
   dob: String,
   classTime: String,

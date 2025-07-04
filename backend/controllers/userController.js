@@ -1,5 +1,6 @@
 const { sendConfirmationEmail } = require('../config/nodemailer');
 const User = require('../models/User');
+const mongoose = require('mongoose'); 
 
 exports.registerUser = async (req, res) => {
   try {
@@ -7,7 +8,7 @@ exports.registerUser = async (req, res) => {
       fullName,
       email,
       mobile,
-      ageClass,
+      learningPath,
       skillLevel,
       courses,
       classTime,
@@ -19,9 +20,10 @@ exports.registerUser = async (req, res) => {
 
     const newUser = await User.create({
       fullName,
+      learningPath,
       email,
       mobile,
-      ageClass,
+      
       skillLevel,
       classTime,
       dob,
@@ -48,6 +50,7 @@ exports.getUsers = async (req, res) => {
   }
 };
 
+<<<<<<< HEAD
 exports.deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -56,11 +59,34 @@ exports.deleteUser = async (req, res) => {
 
     if (!deletedUser) {
       return res.status(404).json({ error: 'User not found.' });
+=======
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log('Received delete request for ID:', id);
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res
+        .status(400)
+        .json({ success: false, message: 'Invalid user ID.' });
+    }
+
+    const deletedUser = await User.findByIdAndDelete(id);
+    if (!deletedUser) {
+      return res
+        .status(404)
+        .json({ success: false, message: 'User not found.' });
+>>>>>>> 45c6a4c (intruction add)
     }
 
     res.json({ success: true, message: 'User deleted successfully.' });
   } catch (err) {
     console.error('Delete user error:', err);
+<<<<<<< HEAD
     res.status(500).json({ error: 'Failed to delete user.' });
+=======
+    res.status(500).json({ success: false, error: 'Failed to delete user.' });
+>>>>>>> 45c6a4c (intruction add)
   }
 };
