@@ -4,6 +4,8 @@ require('dotenv').config();
 const IMAGE_URL =
   'https://res.cloudinary.com/ddx5zp3tc/image/upload/v1751632951/WhatsApp_Image_2025-07-04_at_15.55.30_735abf2c_pgimgx.jpg';
 
+const FORM_LINK = 'https://form-coding-meet.vercel.app/';
+
 const sendConfirmationEmail = async (user) => {
   try {
     const transporter = nodemailer.createTransport({
@@ -36,6 +38,11 @@ const sendConfirmationEmail = async (user) => {
           </p>
 
           <p style="font-size: 15px; color: #333;">Feel free to reply to this email if you have any questions. We're excited to see you grow!</p>
+
+          <p style="margin-top: 20px; font-size: 15px;">
+            📢 Help us grow! Share this with friends or in coding groups:<br/>
+            👉 <a href="${FORM_LINK}" target="_blank" style="color: #2563eb; font-weight: bold;">https://form-coding-meet.vercel.app/</a>
+          </p>
 
           <p style="margin-top: 30px; font-size: 14px; color: #888;">– The CodingMeet Team</p>
         </div>
@@ -72,6 +79,11 @@ const sendPersonalEmail = async ({ to, name, meetLink, date, time }) => {
           <p><strong>Google Meet:</strong> <a href="${meetLink}" style="color: #2563eb;">Join Meeting</a></p>
 
           <p style="margin-top: 20px;">Make sure you're ready with a notebook, pen, and your questions!</p>
+
+          <p style="margin-top: 20px; font-size: 15px;">
+            📢 Invite your friends to join CodingMeet as well:<br/>
+            👉 <a href="${FORM_LINK}" target="_blank" style="color: #2563eb; font-weight: bold;">https://form-coding-meet.vercel.app/</a>
+          </p>
 
           <p style="margin-top: 30px; font-size: 14px; color: #888;">– The CodingMeet Team</p>
         </div>

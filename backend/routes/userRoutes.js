@@ -6,7 +6,8 @@ const {
   registerUser,
   getUsers,
   deleteUser,
-  sendInvite, 
+  sendInvite,
+  sendAnnouncementEmailToAll,
 } = require('../controllers/userController');
 
 const { storage } = require('../config/cloudinary');
@@ -16,5 +17,6 @@ router.post('/register', upload.single('profilePic'), registerUser);
 router.get('/users', getUsers);
 router.delete('/users/:id', deleteUser);
 router.post('/send-invite', sendInvite);
+router.post('/send-announcement', sendAnnouncementEmailToAll);
 
 module.exports = router;

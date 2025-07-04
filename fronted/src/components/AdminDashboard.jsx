@@ -9,6 +9,7 @@ export default function AdminDashboard() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedUser, setSelectedUser] = useState(null);
   const [loadingUserId, setLoadingUserId] = useState(null);
+  const [sendingAnnouncement, setSendingAnnouncement] = useState(false);
   const usersPerPage = 5;
 
   useEffect(() => {
@@ -34,6 +35,23 @@ export default function AdminDashboard() {
     setSelectedUser(user);
   };
 
+  const handleSendAnnouncement = async () => {
+    const confirm = window.confirm("Are you sure you want to send hackathon announcement emails to all users?");
+    if (!confirm) return;
+
+    setSendingAnnouncement(true);
+    try {
+      toast.info("Sending emails...");
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/send-announcement`);
+      toast.success("Hackathon announcement sent to all users.");
+    } catch (err) {
+      console.error("Send announcement error:", err);
+      toast.error("Failed to send announcement emails.");
+    } finally {
+      setSendingAnnouncement(false);
+    }
+  };
+
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
@@ -47,6 +65,26 @@ export default function AdminDashboard() {
         <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-indigo-400">
           Admin Dashboard
         </h1>
+
+        {/* Announcement Button */}
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={handleSendAnnouncement}
+            disabled={sendingAnnouncement}
+            className={`${
+              sendingAnnouncement ? "bg-gray-500 cursor-not-allowed" : "bg-green-500 hover:bg-green-600"
+            } text-white px-6 py-2 rounded-lg shadow-lg font-semibold transition`}
+          >
+            {sendingAnnouncement ? (
+              <div className="flex items-center gap-2">
+                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                Sending...
+              </div>
+            ) : (
+              <>Send Hackathon Announcement</>
+            )}
+          </button>
+        </div>
 
         {/* Table View */}
         <div className="w-full overflow-x-auto hidden sm:block rounded-lg shadow">
