@@ -11,6 +11,12 @@ const userSchema = new mongoose.Schema({
   profilePicPath: String,
   isAdmin: { type: Boolean, default: false },
   courses: [String],
+  invitation: {
+    date: String,
+    time: String,
+    meetLink: String,
+    invited: { type: Boolean, default: false },
+  },
 });
 
 module.exports = mongoose.model('User', userSchema);

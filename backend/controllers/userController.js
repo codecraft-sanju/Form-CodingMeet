@@ -44,7 +44,7 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-//  Get All Users
+// Get All Users
 exports.getUsers = async (req, res) => {
   try {
     const users = await User.find();
@@ -55,7 +55,7 @@ exports.getUsers = async (req, res) => {
   }
 };
 
-//  Delete User
+// Delete User
 exports.deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -93,7 +93,21 @@ exports.sendInvite = async (req, res) => {
 
   try {
     await sendPersonalEmail({ to, name, meetLink, date, time });
-    res.json({ success: true, message: 'Invite sent successfully' });
+
+    // Save invitation details to DB
+    await User.findOneAndUpdate(
+      { email: to },
+      {
+        invitation: {
+          date,
+          time,
+          meetLink,
+          invited: true,
+        },
+      },
+    );
+
+    res.json({ success: true, message: 'Invite sent and saved successfully' });
   } catch (err) {
     console.error('Error sending invite:', err);
     res.status(500).json({ success: false, message: 'Failed to send invite' });

@@ -3,6 +3,7 @@ import { useUserContext } from "../context/UserContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 import InviteModal from "./InviteModal";
+import { CalendarDays, Clock, Link2 } from "lucide-react";
 
 export default function AdminDashboard() {
   const { users, fetchUsers } = useUserContext();
@@ -56,15 +57,52 @@ export default function AdminDashboard() {
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
   const totalPages = Math.ceil(users.length / usersPerPage);
-
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const invitedUsers = users.filter((user) => user.invitation?.invited);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white p-4 sm:p-6">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-indigo-400">
+        <h1 className="text-3xl sm:text-4xl font-extrabold mb-8 text-center text-indigo-400 uppercase tracking-wider">
           Admin Dashboard
         </h1>
+
+        {/* Meeting Cards Section */}
+        {invitedUsers.length > 0 && (
+          <div className="mb-10">
+            <h2 className="text-2xl font-semibold text-indigo-300 mb-4 border-b border-indigo-500 pb-2">
+              Your Scheduled Meetings
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {invitedUsers.map((user) => (
+                <div key={user._id} className="bg-white/10 backdrop-blur-md text-white p-5 rounded-xl shadow-lg flex flex-col gap-3 border border-gray-700">
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={user.profilePicPath}
+                      alt={user.fullName}
+                      className="w-14 h-14 rounded-full border border-white object-cover"
+                    />
+                    <div>
+                      <p className="text-lg font-semibold">{user.fullName}</p>
+                      <p className="text-sm text-indigo-200">{user.email}</p>
+                    </div>
+                  </div>
+                  <p className="flex items-center gap-2"><CalendarDays size={18} className="text-indigo-300" /><span className="font-semibold">Date:</span> {user.invitation.date}</p>
+                  <p className="flex items-center gap-2"><Clock size={18} className="text-indigo-300" /><span className="font-semibold">Time:</span> {user.invitation.time}</p>
+                  <a
+                    href={user.invitation.meetLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 mt-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-md text-sm font-medium text-center"
+                  >
+                    <Link2 size={16} /> Join Meeting
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Announcement Button */}
         <div className="flex justify-end mb-4">
@@ -153,10 +191,7 @@ export default function AdminDashboard() {
         {/* Mobile View */}
         <div className="space-y-4 sm:hidden">
           {currentUsers.map((user) => (
-            <div
-              key={user._id}
-              className="bg-white/10 backdrop-blur-md p-4 rounded-lg shadow text-sm"
-            >
+            <div key={user._id} className="bg-white/10 backdrop-blur-md p-4 rounded-lg shadow text-sm">
               <div className="flex items-center gap-4 mb-2">
                 <img
                   src={user.profilePicPath}
