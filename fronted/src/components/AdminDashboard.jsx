@@ -57,10 +57,19 @@ export default function AdminDashboard() {
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
   const totalPages = Math.ceil(users.length / usersPerPage);
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-  const invitedUsers = users.filter((user) => user.invitation?.invited);
 
-  // Fullscreen Loader when users are loading
+  // ✅ Filter only future or today's meetings
+  const invitedUsers = users.filter((user) => {
+    if (!user.invitation?.invited || !user.invitation.date) return false;
+
+    const meetingDate = new Date(user.invitation.date);
+    const today = new Date();
+    meetingDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+
+    return meetingDate >= today;
+  });
+
   if (!users.length) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
@@ -251,7 +260,7 @@ export default function AdminDashboard() {
           {Array.from({ length: totalPages }, (_, i) => (
             <button
               key={i}
-              onClick={() => paginate(i + 1)}
+              onClick={() => setCurrentPage(i + 1)}
               className={`px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base rounded-lg ${
                 currentPage === i + 1
                   ? "bg-indigo-600 text-white"
@@ -264,7 +273,6 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Invite Modal */}
       {selectedUser && (
         <InviteModal user={selectedUser} onClose={() => setSelectedUser(null)} />
       )}
