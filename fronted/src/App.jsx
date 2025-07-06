@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import RegistrationForm from "./components/RegistrationForm";
-import AdminDashboard from "./components/AdminDashboard";
+import RegistrationForm from "./pages/RegistrationForm";
+import AdminDashboard from "./pages/AdminDashboard";
 import AnimatedCanvas from "./components/AnimatedCanvas";
 import { ToastContainer } from "react-toastify";
 import { motion } from "framer-motion";
@@ -8,11 +8,13 @@ import { TypeAnimation } from "react-type-animation";
 import "react-toastify/dist/ReactToastify.css";
 
 
+
 function App() {
   return (
     <Router>
       <div className="relative min-h-screen flex flex-col items-center px-4 py-10 space-y-16 text-white overflow-hidden">
         <AnimatedCanvas />
+        
 
         <Routes>
           <Route

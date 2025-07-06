@@ -4,8 +4,9 @@ import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import CountUp from "react-countup";
 import { useUserContext } from "../context/UserContext";
-import InstructionsModal from "./InstructionsModal";
-import UserInputFields from "./UserInputFields";
+import InstructionsModal from "../components/InstructionsModal";
+import UserInputFields from "../components/UserInputFields";
+import { Rocket, Target, Users } from "lucide-react";
 
 export default function RegistrationForm() {
   const [formData, setFormData] = useState({
@@ -121,21 +122,31 @@ export default function RegistrationForm() {
         transition={{ delay: 0.5, duration: 0.6 }}
         className="w-full text-center mb-8"
       >
-        <div className="inline-block bg-white/10 backdrop-blur-md px-8 py-5 rounded-2xl shadow-xl border border-purple-400/40 hover:shadow-purple-500/50 transition-all">
-          <p className="text-white text-lg sm:text-xl font-medium">
-            {usersLoaded && (
-              <>
-                <CountUp
-                  end={users.length}
-                  duration={2}
-                  separator=","
-                  className="text-yellow-400 text-3xl font-extrabold"
-                />{" "}
-                learners already joined{" "}
-                <span className="text-pink-400 font-semibold">CodingMeet</span>!
-              </>
-            )}
-          </p>
+        <div className="w-full max-w-xl mx-auto bg-white/10 backdrop-blur-md px-6 sm:px-8 py-5 rounded-2xl shadow-xl border border-purple-400/40 hover:shadow-purple-500/50 transition-all">
+          <div className="space-y-2">
+            <p className="text-white text-lg sm:text-xl font-medium flex flex-wrap items-center justify-center gap-2 text-center">
+              <Users size={24} className="text-yellow-400" />
+              <CountUp
+                end={users.length}
+                duration={2}
+                separator=","
+                className="text-yellow-400 text-3xl font-extrabold"
+              />{" "}
+              learners already joined{" "}
+              <span className="text-pink-400 font-semibold">CodingMeet</span>
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center text-white/80 text-sm sm:text-base gap-3 mt-2 text-center">
+              <div className="flex items-center gap-2">
+                <Rocket size={18} className="text-green-400" />
+                Hackathon launching soon
+              </div>
+              <div className="hidden sm:block">|</div>
+              <div className="flex items-center gap-2">
+                <Target size={18} className="text-blue-400" />
+                Free Internship after <span className="text-yellow-300 font-semibold">100+ registrations</span>
+              </div>
+            </div>
+          </div>
         </div>
       </motion.div>
 
