@@ -3,7 +3,7 @@ import { OrbitControls, Stars } from '@react-three/drei';
 
 export default function AnimatedCanvas() {
   return (
-    <div className="fixed top-0 left-0 w-full h-full z-10">
+    <div className="fixed top-0 left-0 w-full h-full">
       <Canvas>
         <color attach="background" args={['#0f172a']} />
         <ambientLight intensity={0.5} />

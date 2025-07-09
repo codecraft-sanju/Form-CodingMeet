@@ -74,7 +74,7 @@ export default function AdminDashboard() {
 
   if (!users.length) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
+      <div className="min-h-screen flex  items-center justify-center bg-gray-900 text-white">
         <div className="flex flex-col items-center">
           <div className="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4"></div>
           <p className="text-lg font-semibold">Loading Admin Panel...</p>
@@ -84,7 +84,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white p-4 sm:p-6">
+    <div className="min-h-screen z-[100] bg-gradient-to-br from-gray-900 to-gray-800 text-white p-4 sm:p-6">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl sm:text-4xl font-extrabold mb-8 text-center text-indigo-400 uppercase tracking-wider">
           Admin Dashboard
