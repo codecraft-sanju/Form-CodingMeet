@@ -29,7 +29,11 @@ export default function RegistrationForm() {
 
   useEffect(() => {
     const load = async () => {
-      await fetchUsers();
+      try {
+        await fetchUsers();
+      } catch (err) {
+        console.error("Failed to fetch users:", err);
+      }
       setUsersLoaded(true);
       const timer = setTimeout(() => setIsPageLoading(false), 1000);
       return () => clearTimeout(timer);
@@ -124,17 +128,24 @@ export default function RegistrationForm() {
       >
         <div className="w-full max-w-xl mx-auto bg-white/10 backdrop-blur-md px-6 sm:px-8 py-5 rounded-2xl shadow-xl border border-purple-400/40 hover:shadow-purple-500/50 transition-all">
           <div className="space-y-2">
-            <p className="text-white text-lg sm:text-xl font-medium flex flex-wrap items-center justify-center gap-2 text-center">
-              <Users size={24} className="text-yellow-400" />
-              <CountUp
-                end={users.length}
-                duration={2}
-                separator=","
-                className="text-yellow-400 text-3xl font-extrabold"
-              />{" "}
-              learners already joined{" "}
-              <span className="text-pink-400 font-semibold">CodingMeet</span>
-            </p>
+            {usersLoaded ? (
+              <p className="text-white text-lg sm:text-xl font-medium flex flex-wrap items-center justify-center gap-2 text-center">
+                <Users size={24} className="text-yellow-400" />
+                <CountUp
+                  end={users.length}
+                  duration={2}
+                  separator=","
+                  className="text-yellow-400 text-3xl font-extrabold"
+                />
+                learners already joined{" "}
+                <span className="text-pink-400 font-semibold">CodingMeet</span>
+              </p>
+            ) : (
+              <p className="text-white text-lg sm:text-xl font-medium animate-pulse">
+                Fetching learners count...
+              </p>
+            )}
+
             <div className="flex flex-col sm:flex-row items-center justify-center text-white/80 text-sm sm:text-base gap-3 mt-2 text-center">
               <div className="flex items-center gap-2">
                 <Rocket size={18} className="text-green-400" />
@@ -143,7 +154,8 @@ export default function RegistrationForm() {
               <div className="hidden sm:block">|</div>
               <div className="flex items-center gap-2">
                 <Target size={18} className="text-blue-400" />
-                Free Internship after <span className="text-yellow-300 font-semibold">100+ registrations</span>
+                Free Internship after{" "}
+                <span className="text-yellow-300 font-semibold">100+ registrations</span>
               </div>
             </div>
           </div>
