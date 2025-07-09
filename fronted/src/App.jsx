@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import RegistrationForm from "./pages/RegistrationForm";
 import AdminDashboard from "./pages/AdminDashboard";
 import AnimatedCanvas from "./components/AnimatedCanvas";
@@ -6,23 +6,24 @@ import { ToastContainer } from "react-toastify";
 import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 import "react-toastify/dist/ReactToastify.css";
+import HackathonPage from "./pages/HackathonPage";
+import Premium from "./components/Premium";
 
 
 
 function App() {
   return (
     <Router>
-      <div className="relative min-h-screen flex flex-col items-center px-4 py-10 space-y-16 text-white overflow-hidden">
+      <div className="relative min-h-screen flex flex-col items-center px-4 py-10  text-white overflow-hidden">
         <AnimatedCanvas />
         
-
         <Routes>
           <Route
             path="/"
             element={
               <>
                 <motion.header
-                  className="text-center max-w-4xl space-y-4 z-10"
+                  className="text-center max-w-4xl   space-y-4 z-10"
                   initial={{ opacity: 0, y: 40 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1 }}
@@ -46,13 +47,15 @@ function App() {
                     Perfect for beginners — 100% free courses, projects & community support.
                   </p>
                 </motion.header>
-                <div className="w-full max-w-4xl z-10">
+                <Premium/>
+                <div className="w-full max-w-4xl pb-22 z-10">
                   <RegistrationForm />
                 </div>
               </>
             }
           />
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/hackathon" element={<HackathonPage />} />
         </Routes>
 
         <ToastContainer

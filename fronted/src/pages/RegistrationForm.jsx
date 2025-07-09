@@ -7,6 +7,7 @@ import { useUserContext } from "../context/UserContext";
 import InstructionsModal from "../components/InstructionsModal";
 import UserInputFields from "../components/UserInputFields";
 import { Rocket, Target, Users } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function RegistrationForm() {
   const [formData, setFormData] = useState({
@@ -26,6 +27,7 @@ export default function RegistrationForm() {
   const [showInstructions, setShowInstructions] = useState(false);
 
   const { users, fetchUsers } = useUserContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const load = async () => {
@@ -120,11 +122,46 @@ export default function RegistrationForm() {
 
   return (
     <>
+      {/*  Floating Buttons */}
+      <div className="fixed md:hidden sm:hidden lg:block hidden top-4 right-4 z-50 flex flex-col sm:flex-row items-center gap-3  sm:gap-4">
+        {/* Premium Access Button */}
+        <motion.button
+          onClick={() => navigate("/hackathon")}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 1, duration: 0.6 }}
+          whileHover={{ scale: 1.1, rotate: 1 }}
+          whileTap={{ scale: 0.95 }}
+          className="bg-gradient-to-r from-yellow-500 to-orange-600 text-white font-bold px-4 py-2 rounded-full shadow-2xl border border-white/20 backdrop-blur-sm hover:from-orange-600 hover:to-yellow-500 transition-all"
+        >
+          Premium Access
+        </motion.button>
+
+        {/* Instructions Button */}
+        <motion.button
+          onClick={() => setShowInstructions(true)}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 1.2, duration: 0.6 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-2 px-4 rounded-full shadow-lg hover:from-purple-700 hover:to-indigo-700 transition-all"
+        >
+          View Instructions
+        </motion.button>
+      </div>
+
+      {showInstructions && (
+        <InstructionsModal onClose={() => setShowInstructions(false)} />
+      )}
+
+      
+
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.6 }}
-        className="w-full text-center mb-8"
+        className="w-full text-center mb-8 mt-20 sm:mt-24"
       >
         <div className="w-full max-w-xl mx-auto bg-white/10 backdrop-blur-md px-6 sm:px-8 py-5 rounded-2xl shadow-xl border border-purple-400/40 hover:shadow-purple-500/50 transition-all">
           <div className="space-y-2">
@@ -132,7 +169,7 @@ export default function RegistrationForm() {
               <p className="text-white text-lg sm:text-xl font-medium flex flex-wrap items-center justify-center gap-2 text-center">
                 <Users size={24} className="text-yellow-400" />
                 <CountUp
-                  end={users.length}
+                  end={users?.length}
                   duration={2}
                   separator=","
                   className="text-yellow-400 text-3xl font-extrabold"
@@ -155,25 +192,14 @@ export default function RegistrationForm() {
               <div className="flex items-center gap-2">
                 <Target size={18} className="text-blue-400" />
                 Free Internship after{" "}
-                <span className="text-yellow-300 font-semibold">100+ registrations</span>
+                <span className="text-yellow-300 font-semibold">
+                  100+ registrations
+                </span>
               </div>
             </div>
           </div>
         </div>
       </motion.div>
-
-      <div className="text-center mt-6">
-        <button
-          onClick={() => setShowInstructions(true)}
-          className="bg-gradient-to-r mb-3 from-indigo-600 to-purple-600 text-white font-semibold py-2 px-6 rounded-xl shadow-lg hover:from-purple-700 hover:to-indigo-700 transition"
-        >
-          View Class Instructions
-        </button>
-      </div>
-
-      {showInstructions && (
-        <InstructionsModal onClose={() => setShowInstructions(false)} />
-      )}
 
       <motion.form
         onSubmit={handleSubmit}
