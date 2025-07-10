@@ -123,7 +123,7 @@ export default function RegistrationForm() {
   return (
     <>
       {/*  Floating Buttons */}
-      <div className="fixed md:hidden sm:hidden lg:block hidden top-4 right-4 z-50 flex flex-col sm:flex-row items-center gap-3  sm:gap-4">
+      <div className="fixed md:hidden  lg:block hidden top-4 right-4 z-50 flex flex-col sm:flex-row items-center   sm:gap-4">
         {/* Premium Access Button */}
         <motion.button
           onClick={() => navigate("/hackathon")}
@@ -132,7 +132,7 @@ export default function RegistrationForm() {
           transition={{ delay: 1, duration: 0.6 }}
           whileHover={{ scale: 1.1, rotate: 1 }}
           whileTap={{ scale: 0.95 }}
-          className="bg-gradient-to-r from-yellow-500 to-orange-600 text-white font-bold px-4 py-2 rounded-full shadow-2xl border border-white/20 backdrop-blur-sm hover:from-orange-600 hover:to-yellow-500 transition-all"
+          className="bg-gradient-to-r from-yellow-500 to-orange-600 text-white font-bold px-4 py-2 rounded-full shadow-2xl border border-white/20 backdrop-blur-sm hover:from-orange-600 hover:to-yellow-500  m-3 transition-all"
         >
           Premium Access
         </motion.button>
@@ -157,12 +157,14 @@ export default function RegistrationForm() {
 
       
 
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.6 }}
-        className="w-full text-center mb-8 mt-20 sm:mt-24"
-      >
+<motion.div
+  initial={{ opacity: 0, y: -10 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.5, duration: 0.6 }}
+  className="w-full text-center mb-8 mt-6"
+ 
+>
+
         <div className="w-full max-w-xl mx-auto bg-white/10 backdrop-blur-md px-6 sm:px-8 py-5 rounded-2xl shadow-xl border border-purple-400/40 hover:shadow-purple-500/50 transition-all">
           <div className="space-y-2">
             {usersLoaded ? (

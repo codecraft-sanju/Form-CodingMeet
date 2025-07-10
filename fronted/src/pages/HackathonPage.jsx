@@ -17,6 +17,26 @@ export default function HackathonPage() {
     load();
   }, []);
 
+  const SimpleLoader = ({ text }) => (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="w-full h-screen flex flex-col items-center justify-center"
+    >
+      <motion.div
+        className="w-16 h-16 border-4 border-white border-t-indigo-500 rounded-full animate-spin"
+        animate={{ rotate: 360 }}
+        transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+      />
+      <p className="mt-4 text-white text-lg font-semibold animate-pulse">
+        {text}
+      </p>
+    </motion.div>
+  );
+  
+
+  if (isLoading) return <SimpleLoader text="Loading Premium ..." />;
+
   return (
     <div className="h-auto w-full px-4 py-10 flex flex-col items-center justify-center relative text-white z-10">
       {/* Back Button */}
@@ -28,9 +48,6 @@ export default function HackathonPage() {
         ← Back
       </motion.button>
 
-      {isLoading ? (
-        <p className="text-xl font-semibold animate-pulse">Loading Premium Area...</p>
-      ) : (
         <>
           {/* Header Section */}
           <motion.div
@@ -85,7 +102,7 @@ export default function HackathonPage() {
             </motion.div>
           </div>
         </>
-      )}
+      
     </div>
   );
 }
