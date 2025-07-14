@@ -6,6 +6,7 @@ const userRoutes = require('./routes/userRoutes');
 
 dotenv.config();
 const app = express();
+console.log('Allowed Origin:', process.env.CLIENT_URL);
 
 app.use(
   cors({
