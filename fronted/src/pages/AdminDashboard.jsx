@@ -14,6 +14,7 @@ export default function AdminDashboard() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [loadingUserId, setLoadingUserId] = useState(null);
   const [sendingAnnouncement, setSendingAnnouncement] = useState(false);
+  const [sendingClassDetails, setSendingClassDetails] = useState(false);
   const usersPerPage = 5;
 
   useEffect(() => {
@@ -40,7 +41,9 @@ export default function AdminDashboard() {
   };
 
   const handleSendAnnouncement = async () => {
-    const confirm = window.confirm("Are you sure you want to send hackathon announcement emails to all users?");
+    const confirm = window.confirm(
+      "Are you sure you want to send hackathon announcement emails to all users?"
+    );
     if (!confirm) return;
 
     setSendingAnnouncement(true);
@@ -53,6 +56,41 @@ export default function AdminDashboard() {
       toast.error("Failed to send announcement emails.");
     } finally {
       setSendingAnnouncement(false);
+    }
+  };
+
+  const handleSendClassDetails = async () => {
+    const meetLink = window.prompt("Enter Google Meet link:");
+    const date = window.prompt("Enter class date (e.g., 20 July 2025):");
+    const time = window.prompt("Enter class time (e.g., 7:00 PM):");
+
+    if (!meetLink || !date || !time) {
+      toast.error("All fields are required.");
+      return;
+    }
+
+    const confirm = window.confirm(
+      `Send class details to ALL users?\n\nDate: ${date}\nTime: ${time}\nMeet Link: ${meetLink}`
+    );
+    if (!confirm) return;
+
+    setSendingClassDetails(true);
+    try {
+      toast.info("Sending class details...");
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/send-class-announcement`,
+        {
+          meetLink,
+          date,
+          time,
+        }
+      );
+      toast.success("Class details sent to all users.");
+    } catch (err) {
+      console.error("Send class details error:", err);
+      toast.error("Failed to send class details.");
+    } finally {
+      setSendingClassDetails(false);
     }
   };
 
@@ -74,7 +112,7 @@ export default function AdminDashboard() {
 
   if (!users.length) {
     return (
-      <div className="min-h-screen flex  items-center justify-center bg-gray-900 text-white">
+      <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
         <div className="flex flex-col items-center">
           <div className="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4"></div>
           <p className="text-lg font-semibold">Loading Admin Panel...</p>
@@ -92,13 +130,15 @@ export default function AdminDashboard() {
 
         <MeetingCardsSection invitedUsers={invitedUsers} />
 
-        {/* Announcement Button */}
-        <div className="flex justify-end mb-4">
+        {/* Action Buttons */}
+        <div className="flex justify-end mb-4 gap-4 flex-wrap">
           <button
             onClick={handleSendAnnouncement}
             disabled={sendingAnnouncement}
             className={`${
-              sendingAnnouncement ? "bg-gray-500 cursor-not-allowed" : "bg-green-500 hover:bg-green-600"
+              sendingAnnouncement
+                ? "bg-gray-500 cursor-not-allowed"
+                : "bg-green-500 hover:bg-green-600"
             } text-white px-6 py-2 rounded-lg shadow-lg font-semibold transition`}
           >
             {sendingAnnouncement ? (
@@ -108,6 +148,25 @@ export default function AdminDashboard() {
               </div>
             ) : (
               <>Send Hackathon Announcement</>
+            )}
+          </button>
+
+          <button
+            onClick={handleSendClassDetails}
+            disabled={sendingClassDetails}
+            className={`${
+              sendingClassDetails
+                ? "bg-gray-500 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700"
+            } text-white px-6 py-2 rounded-lg shadow-lg font-semibold transition`}
+          >
+            {sendingClassDetails ? (
+              <div className="flex items-center gap-2">
+                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                Sending...
+              </div>
+            ) : (
+              <>Send Regular Class Details</>
             )}
           </button>
         </div>

@@ -8,6 +8,7 @@ const {
   deleteUser,
   sendInvite,
   sendAnnouncementEmailToAll,
+  sendClassAnnouncementEmailToAll,
 } = require('../controllers/userController');
 
 const { storage } = require('../config/cloudinary');
@@ -18,5 +19,7 @@ router.get('/users', getUsers);
 router.delete('/users/:id', deleteUser);
 router.post('/send-invite', sendInvite);
 router.post('/send-announcement', sendAnnouncementEmailToAll);
+router.post('/send-class-announcement', sendClassAnnouncementEmailToAll);
+
 
 module.exports = router;
