@@ -6,8 +6,11 @@ import CountUp from "react-countup";
 import { useUserContext } from "../context/UserContext";
 import InstructionsModal from "../components/InstructionsModal";
 import UserInputFields from "../components/UserInputFields";
+// import TestimonialsSlider from "../components/TestimonialsSlider";
+// import FeedbackFormSidebar from "../components/FeedbackFormSidebar"; // Feedback import commented
 import { Rocket, Target, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import Footer from "../components/Footer";
 
 export default function RegistrationForm() {
   const [formData, setFormData] = useState({
@@ -25,6 +28,7 @@ export default function RegistrationForm() {
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [usersLoaded, setUsersLoaded] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
+  // const [isFeedbackOpen, setIsFeedbackOpen] = useState(false); // Feedback toggle state commented
 
   const { users, fetchUsers } = useUserContext();
   const navigate = useNavigate();
@@ -122,8 +126,8 @@ export default function RegistrationForm() {
 
   return (
     <>
-      {/*  Floating Buttons */}
-      <div className="fixed md:hidden  lg:block hidden top-4 right-4 z-50 flex flex-col sm:flex-row items-center   sm:gap-4">
+      {/* Floating Buttons */}
+      <div className="fixed md:hidden lg:block hidden top-4 right-4 z-50 flex flex-col sm:flex-row items-center sm:gap-4">
         {/* Premium Access Button */}
         <motion.button
           onClick={() => navigate("/hackathon")}
@@ -132,7 +136,7 @@ export default function RegistrationForm() {
           transition={{ delay: 1, duration: 0.6 }}
           whileHover={{ scale: 1.1, rotate: 1 }}
           whileTap={{ scale: 0.95 }}
-          className="bg-gradient-to-r from-yellow-500 to-orange-600 text-white font-bold px-4 py-2 rounded-full shadow-2xl border border-white/20 backdrop-blur-sm hover:from-orange-600 hover:to-yellow-500  m-3 transition-all"
+          className="bg-gradient-to-r from-yellow-500 to-orange-600 text-white font-bold px-4 py-2 rounded-full shadow-2xl border border-white/20 backdrop-blur-sm hover:from-orange-600 hover:to-yellow-500 m-3 transition-all"
         >
           Premium Access
         </motion.button>
@@ -149,22 +153,41 @@ export default function RegistrationForm() {
         >
           View Instructions
         </motion.button>
+
+        {/* Feedback Button */}
+        {/* 
+        <motion.button
+          onClick={() => setIsFeedbackOpen(true)}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 1.4, duration: 0.6 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold py-2 px-4 rounded-full shadow-lg hover:from-emerald-700 hover:to-green-700 transition-all m-3"
+        >
+          Give Feedback
+        </motion.button>
+        */}
       </div>
 
       {showInstructions && (
         <InstructionsModal onClose={() => setShowInstructions(false)} />
       )}
 
-      
+      {/* Feedback Sidebar rendering */}
+      {/* 
+      <FeedbackFormSidebar
+        isOpen={isFeedbackOpen}
+        onClose={() => setIsFeedbackOpen(false)}
+      />
+      */}
 
-<motion.div
-  initial={{ opacity: 0, y: -10 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ delay: 0.5, duration: 0.6 }}
-  className="w-full text-center mb-8 mt-6"
- 
->
-
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5, duration: 0.6 }}
+        className="w-full text-center mb-8 mt-6"
+      >
         <div className="w-full max-w-xl mx-auto bg-white/10 backdrop-blur-md px-6 sm:px-8 py-5 rounded-2xl shadow-xl border border-purple-400/40 hover:shadow-purple-500/50 transition-all">
           <div className="space-y-2">
             {usersLoaded ? (
@@ -225,6 +248,12 @@ export default function RegistrationForm() {
           Register
         </motion.button>
       </motion.form>
+
+      {/* Testimonials Slider */}
+      {/* <div className="my-7">
+        <TestimonialsSlider />
+      </div> */}
+
     </>
   );
 }

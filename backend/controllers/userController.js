@@ -139,7 +139,7 @@ exports.sendAnnouncementEmailToAll = async (req, res) => {
     <p style="font-size: 16px;">Hi Learner,</p>
 
     <p style="font-size: 15px;">
-      We’re excited to announce that <strong style="color: #10b981;">CodingMeet</strong> will be starting <strong>group coding classes</strong> very soon once we reach 60+ registrations.
+      We’re excited to announce that <strong style="color: #10b981;">CodingMeet</strong> will be starting <strong>group coding classes</strong> very soon once we reach 150+ registrations.
     </p>
 
     <p style="font-size: 15px;"><strong>${total}</strong> students have already registered!</p>
@@ -147,7 +147,7 @@ exports.sendAnnouncementEmailToAll = async (req, res) => {
     <hr style="margin: 20px 0;" />
 
     <p style="font-size: 15px;">
-       <strong>Bonus Alert!</strong> When we hit <strong>100 registrations</strong>, we will organize an exclusive <strong>Hackathon</strong> with <strong>prizes</strong>  and a guaranteed <strong>internship</strong> for the winner!
+       <strong>Bonus Alert!</strong> When we hit <strong>150 registrations</strong>, we will organize an exclusive <strong>Hackathon</strong> with <strong>prizes</strong>  and a guaranteed <strong>internship</strong> for the winner!
     </p>
 
     <p style="font-size: 15px;">

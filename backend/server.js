@@ -3,6 +3,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const userRoutes = require('./routes/userRoutes');
+const feedbackRoutes = require('./routes/feedbackRoutes');
 
 dotenv.config();
 const app = express();
@@ -24,6 +25,8 @@ mongoose
   .catch((err) => console.error('MongoDB error:', err));
 
 app.use('/api', userRoutes);
+app.use('/api/feedback', feedbackRoutes);
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
