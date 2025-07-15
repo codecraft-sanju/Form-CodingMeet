@@ -10,7 +10,7 @@ import UserInputFields from "../components/UserInputFields";
 // import FeedbackFormSidebar from "../components/FeedbackFormSidebar"; // Feedback import commented
 import { Rocket, Target, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import Footer from "../components/Footer";
+
 
 export default function RegistrationForm() {
   const [formData, setFormData] = useState({
@@ -218,7 +218,7 @@ export default function RegistrationForm() {
                 <Target size={18} className="text-blue-400" />
                 Free Internship after{" "}
                 <span className="text-yellow-300 font-semibold">
-                  100+ registrations
+                  150+ registrations
                 </span>
               </div>
             </div>
