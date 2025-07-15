@@ -15,6 +15,10 @@ export default function AdminDashboard() {
   const [loadingUserId, setLoadingUserId] = useState(null);
   const [sendingAnnouncement, setSendingAnnouncement] = useState(false);
   const [sendingClassDetails, setSendingClassDetails] = useState(false);
+
+  // ✅ Search State
+  const [searchTerm, setSearchTerm] = useState("");
+
   const usersPerPage = 5;
 
   useEffect(() => {
@@ -94,10 +98,26 @@ export default function AdminDashboard() {
     }
   };
 
+  // ✅ Filtered users based on search
+  const filteredUsers = users.filter((user) => {
+    const name = user.fullName?.toLowerCase() || "";
+    const email = user.email?.toLowerCase() || "";
+    const mobile = user.mobile?.toString() || "";
+    const skill = user.skillLevel?.toLowerCase() || "";
+    const search = searchTerm.toLowerCase();
+
+    return (
+      name.includes(search) ||
+      email.includes(search) ||
+      mobile.includes(search) ||
+      skill.includes(search)
+    );
+  });
+
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
-  const totalPages = Math.ceil(users.length / usersPerPage);
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+  const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
 
   const invitedUsers = users.filter((user) => {
     if (!user.invitation?.invited || !user.invitation.date) return false;
@@ -129,6 +149,21 @@ export default function AdminDashboard() {
         </h1>
 
         <MeetingCardsSection invitedUsers={invitedUsers} />
+
+        {/* Search Input */}
+        <div className="flex justify-end mb-6">
+  <input
+    type="text"
+    placeholder="Search by name, email, mobile..."
+    value={searchTerm}
+    onChange={(e) => {
+      setSearchTerm(e.target.value);
+      setCurrentPage(1);
+    }}
+    className="w-full sm:w-1/3 px-4 py-2 rounded-lg shadow border border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 text-white placeholder:text-white"
+  />
+</div>
+
 
         {/* Action Buttons */}
         <div className="flex justify-end mb-4 gap-4 flex-wrap">
