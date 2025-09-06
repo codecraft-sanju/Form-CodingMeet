@@ -9,7 +9,7 @@ export const UserProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [btnLoading, setBtnLoading] = useState(false);
 
-  const API_URL = "http://localhost:5000/api"; // backend base URL
+  const API_URL = "https://form-codingmeet.onrender.com/api"; // backend base URL
 
   // register new user
   const registerUser = async (userData) => {

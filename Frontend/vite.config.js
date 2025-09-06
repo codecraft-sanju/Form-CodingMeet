@@ -7,8 +7,8 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     proxy: {
-      '/api': {
-        target: 'https://form-codingmeet.onrender.com',
+      "/api": {
+        target: "http://localhost:5000",
       },
     },
   },
