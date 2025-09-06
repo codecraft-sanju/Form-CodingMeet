@@ -6,7 +6,7 @@ import Admin from "./pages/Admin";
 
 const App = () => {
   return (
-    <div>
+    <div className="select-none">
       <Routes>
         <Route path="/" element={<Form />} />
         <Route path="/premium" element={<Premium />} />
